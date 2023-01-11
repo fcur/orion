@@ -18,4 +18,10 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Orion.App.Dal.MongoDb\Orion.App.Dal.MongoDb.csproj" />
+      <ProjectReference Include="..\Orion.App.Dal.PostgreSql\Orion.App.Dal.PostgreSql.csproj" />
+      <ProjectReference Include="..\Orion.App.Integration.Hangfire\Orion.App.Integration.Hangfire.csproj" />
+    </ItemGroup>
+
 </Project>
