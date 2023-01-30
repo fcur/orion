@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orion.App.Dal.PostgreSql;
 using Orion.App.Dal.PostgreSql.Repositories;
-using Orion.App.Domain.FeedEntity;
+using Orion.App.Domain.SiriusEntity;
 
 namespace Orion.App.Dal.PostgreSQL.Infrastructure;
 
@@ -24,7 +24,8 @@ public static class ConfigurationExtensions
 
         services.AddHostedService<DbMigrationHostedService>();
 
-        services.AddTransient<IFeedRepository, FeedRepository>();
+        services.AddTransient<IFeatureRepository, FeatureRepository>();
+        services.AddTransient<IFeatureQueryRepository, FeatureQueryRepository>();
 
         return services;
     }

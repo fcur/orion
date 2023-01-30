@@ -20,4 +20,8 @@
       <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Orion.App.Domain\Orion.App.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,8 +1,10 @@
+using Orion.App.Domain.SiriusEntity.DomainEvents;
+
 namespace Orion.Integration.Kafka.IntegrationEvents;
 
 public static class FeedEventConverter
 {
-    public static FeedCreationEvent ToIntegrationEvent(this App.Domain.FeedEntity.Events.FeedCreationEvent domainEvent)
+    public static FeedCreationEvent ToIntegrationEvent(this SiriusContentCreationEvent domainEvent)
     {
         ArgumentNullException.ThrowIfNull(domainEvent);
         
@@ -12,8 +14,8 @@ public static class FeedEventConverter
         };
 
         return new(
-            domainEvent.FeedId.Id, 
-            domainEvent.FeedName.Value, 
+            domainEvent.FeatureId.Value, 
+            domainEvent.ContentTitle.Value, 
             domainEvent.StartAt,data, 
             domainEvent.Version.Value, 
             domainEvent.OccuredAt);

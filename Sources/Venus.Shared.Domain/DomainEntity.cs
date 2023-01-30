@@ -17,14 +17,43 @@ public abstract class DomainEntity<TId> : IEquatable<DomainEntity<TId>>
     public DomainVersion Version { get; private set; }
 
     private List<DomainEvent> DomainEvents { get; }
-
     
     public bool Equals(DomainEntity<TId>? other)
     {
-        throw new NotImplementedException();
+        if (other == null)
+        {
+            return false;
+        }
+
+        if (this == other)
+        {
+            return true;
+        }
+        
+        return EqualityComparer<TId>.Default.Equals(Id, other!.Id);
+    }
+
+    public override bool Equals(object? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        
+        if (other!.GetType() == GetType())
+        {
+            return Equals((DomainEntity<TId>)other);
+        }
+        
+        return false;
     }
     
-    public void AddEvent(DomainEvent domainEvent)
+    public override int GetHashCode()
+    {
+        return EqualityComparer<TId>.Default.GetHashCode(Id!);
+    }
+
+    protected void AddEvent(DomainEvent domainEvent)
     {
         DomainEvents.Add(domainEvent);
     }
@@ -36,10 +65,18 @@ public abstract class DomainEntity<TId> : IEquatable<DomainEntity<TId>>
         return result;
     }
     
-    protected DomainVersion NextVersion => DomainVersion.Create(Version.Value + 1);
-    
     protected void IncrementVersion()
     {
-        Version = NextVersion;
+        Version =  DomainVersion.Create(Version.Value + 1L);
+    }
+    
+    public static bool operator ==(DomainEntity<TId>? a, DomainEntity<TId>? b)
+    {
+        return Equals(a, b);
+    }
+
+    public static bool operator !=(DomainEntity<TId>? a, DomainEntity<TId>? b)
+    {
+        return !Equals(a, b);
     }
 }

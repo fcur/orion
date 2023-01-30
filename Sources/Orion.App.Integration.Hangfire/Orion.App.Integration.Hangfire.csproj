@@ -28,7 +28,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Orion.App.Domain\Orion.App.Domain.csproj" />
-      <ProjectReference Include="..\Orion.App.Integration.DataProvider\Orion.App.Integration.DataProvider.csproj" />
+      <ProjectReference Include="..\Orion.App.Integration.SiriusProvider\Orion.App.Integration.SiriusProvider.csproj" />
     </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Domain", "Sources
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Domain.UnitTests", "Sources\Orion.App.Domain.UnitTests\Orion.App.Domain.UnitTests.csproj", "{01516E87-F834-4633-B323-3AF095A8C88D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Integration.DataProvider", "Sources\Orion.App.Integration.DataProvider\Orion.App.Integration.DataProvider.csproj", "{0BF76165-D6CC-459F-AA88-38DE831EABFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Integration.SiriusProvider", "Sources\Orion.App.Integration.SiriusProvider\Orion.App.Integration.SiriusProvider.csproj", "{0BF76165-D6CC-459F-AA88-38DE831EABFC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Services", "Sources\Orion.App.Services\Orion.App.Services.csproj", "{B7E7C1CE-BFF7-404B-B667-5750F1712E94}"
 EndProject
@@ -19,6 +19,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Shared.Infrastructure", "Sources\Venus.Shared.Infrastructure\Venus.Shared.Infrastructure.csproj", "{11746849-9359-4D66-B2FC-F6BCB3E9BDEB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.Integration.Kafka", "Sources\Orion.Integration.Kafka\Orion.Integration.Kafka.csproj", "{57BA08A8-FF93-471E-AE47-8BD5CDA12830}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Integration.SiriusProvider.Tests", "Sources\Orion.App.Integration.SiriusProvider.Tests\Orion.App.Integration.SiriusProvider.Tests.csproj", "{BD56810C-A100-4086-BFFE-C5F6B413F9A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Host.Client", "Sources\Orion.App.Host.Client\Orion.App.Host.Client.csproj", "{58158978-4D03-465B-B867-60F0C837CB88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,5 +70,13 @@ Global
 		{57BA08A8-FF93-471E-AE47-8BD5CDA12830}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57BA08A8-FF93-471E-AE47-8BD5CDA12830}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57BA08A8-FF93-471E-AE47-8BD5CDA12830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD56810C-A100-4086-BFFE-C5F6B413F9A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD56810C-A100-4086-BFFE-C5F6B413F9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD56810C-A100-4086-BFFE-C5F6B413F9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD56810C-A100-4086-BFFE-C5F6B413F9A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58158978-4D03-465B-B867-60F0C837CB88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58158978-4D03-465B-B867-60F0C837CB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58158978-4D03-465B-B867-60F0C837CB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58158978-4D03-465B-B867-60F0C837CB88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -7,11 +7,11 @@ namespace Orion.App.Dal.PostgreSql;
 
 public class OrionDbContext: DbContext
 {
-    internal virtual DbSet<FeedDal> Feeds { get; set; } = null!;
+    internal virtual DbSet<FeatureDal> Features { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<FeedDal>(FeedDal.ConfigureModel);
+        modelBuilder.Entity<FeatureDal>(FeatureDal.ConfigureModel);
         base.OnModelCreating(modelBuilder);
     }
     

@@ -1,17 +1,17 @@
 using System.IO.Pipes;
 using MediatR;
-using Orion.App.Domain.FeedEntity.Events;
+using Orion.App.Domain.SiriusEntity.DomainEvents;
+using Orion.App.Domain.SiriusEntity.Events;
 using Orion.Integration.Kafka.IntegrationEvents;
 using Venus.Shared.Domain;
-using FeedCreationDomainEvent = Orion.App.Domain.FeedEntity.Events.FeedCreationEvent;
 using FeedCreationIntegrationEvent = Orion.Integration.Kafka.IntegrationEvents.FeedCreationEvent;
 
 namespace Orion.Integration.Kafka.NotificationHandlers;
 
 public sealed class FeedNotificationHandler:
-    INotificationHandler<DomainEventNotification<FeedCreationDomainEvent>>
+    INotificationHandler<DomainEventNotification<SiriusContentCreationEvent>>
 {
-    public Task Handle(DomainEventNotification<FeedCreationDomainEvent> notification, CancellationToken cancellationToken)
+    public Task Handle(DomainEventNotification<SiriusContentCreationEvent> notification, CancellationToken cancellationToken)
     {
         var domainEvents = notification.DomainEvents;
         
@@ -28,9 +28,9 @@ public sealed class FeedNotificationHandler:
     private Task PublishIntegrationEvent<TDomainEvent>(
         TDomainEvent domainEvent,
         Func<TDomainEvent, FeedCreationIntegrationEvent> converter,
-        CancellationToken cancellationToken) where TDomainEvent: FeedBaseEvent
+        CancellationToken cancellationToken) where TDomainEvent: SiriusContentBaseEvent
     {
-        var key = $"DataProviderId_{domainEvent.FeedId}";
+        var key = $"DataProviderId_{domainEvent.FeatureId}";
         var eventPlayload = converter(domainEvent);
 
         throw new NotImplementedException("Add Kafka publisher");

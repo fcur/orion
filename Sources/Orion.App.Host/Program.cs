@@ -1,5 +1,5 @@
 using Orion.App.Dal.PostgreSQL.Infrastructure;
-using Orion.App.Integration.DataProvider.Infrastructure;
+using Orion.App.Integration.SiriusProvider.Infrastructure;
 using Orion.App.Integration.Hangfire.Infrastructure;
 using Orion.App.Integration.Hangfire.Jobs;
 using Venus.Shared.Domain;

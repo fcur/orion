@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
-namespace Orion.App.Integration.DataProvider.Infrastructure;
+namespace Orion.App.Integration.SiriusProvider.Infrastructure;
 
 public static class DataProviderExtensions
 {

@@ -1,4 +1,4 @@
-namespace Orion.App.Integration.DataProvider.Infrastructure;
+namespace Orion.App.Integration.SiriusProvider.Infrastructure;
 
 public sealed class DataProviderSettings
 {
