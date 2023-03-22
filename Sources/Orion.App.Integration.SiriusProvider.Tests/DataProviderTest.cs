@@ -16,6 +16,9 @@ public sealed class DataProviderTest
     public async Task LoadNewFeatures_ThenInsert(FeatureDto featureDto)
     {
         // Arrange
+        var atTime = DateTimeOffset.UtcNow;
+        featureDto.Override(startTime: atTime.AddHours(2), endTime: atTime.AddHours(4), changedAt: atTime);
+
         var features = new ConcurrentBag<Feature>();
         var apiMock = CreateDataProviderApi(featureDto);
         var featureRepositoryMock = CreateFeatureInsertRepository(features);
@@ -27,11 +30,14 @@ public sealed class DataProviderTest
         var feedsDto = await apiMock.Object.GetFeeds(requestParams: new GetEventsParams(), ct: default);
         await job.Process(default);
 
-
         // Assert
         using var scope = new AssertionScope();
         feedsDto.Single().Should().Be(featureDto);
-        features.Count.Should().Be(1);
+        features.Should().ContainSingle(v
+            => v.ContentId == new ContentId(featureDto.Id)
+            && v.ContentTitle.Value == featureDto.Name
+            && v.StartAt == featureDto.StartTime
+            && v.EndAt == featureDto.EndTime);
     }
 
     [Theory, AutoData]
@@ -123,7 +129,6 @@ public sealed class DataProviderTest
 
         return mock;
     }
-
 
     private static Mock<IFeatureQueryRepository> CreateFeatureQueryRepository(params Feature[] features)
     {
