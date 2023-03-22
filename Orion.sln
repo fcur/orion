@@ -1,28 +1,37 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Host", "Sources\Orion.App.Host\Orion.App.Host.csproj", "{35CF2034-F988-4050-857A-D52B704088B5}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Host", "Sources\Orion.App.Host\Orion.App.Host.csproj", "{35CF2034-F988-4050-857A-D52B704088B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Dal.PostgreSql", "Sources\Orion.App.Dal.PostgreSql\Orion.App.Dal.PostgreSql.csproj", "{A90C2DC5-B667-4941-ADE5-B998DB27C3BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Dal.PostgreSql", "Sources\Orion.App.Dal.PostgreSql\Orion.App.Dal.PostgreSql.csproj", "{A90C2DC5-B667-4941-ADE5-B998DB27C3BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Domain", "Sources\Orion.App.Domain\Orion.App.Domain.csproj", "{7DA7F5A5-B41B-46EB-BB45-59759E1CA8DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Domain", "Sources\Orion.App.Domain\Orion.App.Domain.csproj", "{7DA7F5A5-B41B-46EB-BB45-59759E1CA8DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Domain.UnitTests", "Sources\Orion.App.Domain.UnitTests\Orion.App.Domain.UnitTests.csproj", "{01516E87-F834-4633-B323-3AF095A8C88D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Domain.UnitTests", "Sources\Orion.App.Domain.UnitTests\Orion.App.Domain.UnitTests.csproj", "{01516E87-F834-4633-B323-3AF095A8C88D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Integration.SiriusProvider", "Sources\Orion.App.Integration.SiriusProvider\Orion.App.Integration.SiriusProvider.csproj", "{0BF76165-D6CC-459F-AA88-38DE831EABFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Integration.SiriusProvider", "Sources\Orion.App.Integration.SiriusProvider\Orion.App.Integration.SiriusProvider.csproj", "{0BF76165-D6CC-459F-AA88-38DE831EABFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Services", "Sources\Orion.App.Services\Orion.App.Services.csproj", "{B7E7C1CE-BFF7-404B-B667-5750F1712E94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Services", "Sources\Orion.App.Services\Orion.App.Services.csproj", "{B7E7C1CE-BFF7-404B-B667-5750F1712E94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Integration.Hangfire", "Sources\Orion.App.Integration.Hangfire\Orion.App.Integration.Hangfire.csproj", "{A8087DB6-C23B-4499-A035-EFF5FD41B19D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Integration.Hangfire", "Sources\Orion.App.Integration.Hangfire\Orion.App.Integration.Hangfire.csproj", "{A8087DB6-C23B-4499-A035-EFF5FD41B19D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Shared.Domain", "Sources\Venus.Shared.Domain\Venus.Shared.Domain.csproj", "{585D78E8-7212-4898-9E1B-82B225DC81BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Venus.Shared.Domain", "Sources\Venus.Shared.Domain\Venus.Shared.Domain.csproj", "{585D78E8-7212-4898-9E1B-82B225DC81BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Shared.Infrastructure", "Sources\Venus.Shared.Infrastructure\Venus.Shared.Infrastructure.csproj", "{11746849-9359-4D66-B2FC-F6BCB3E9BDEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Venus.Shared.Infrastructure", "Sources\Venus.Shared.Infrastructure\Venus.Shared.Infrastructure.csproj", "{11746849-9359-4D66-B2FC-F6BCB3E9BDEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.Integration.Kafka", "Sources\Orion.Integration.Kafka\Orion.Integration.Kafka.csproj", "{57BA08A8-FF93-471E-AE47-8BD5CDA12830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.Integration.Kafka", "Sources\Orion.Integration.Kafka\Orion.Integration.Kafka.csproj", "{57BA08A8-FF93-471E-AE47-8BD5CDA12830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Integration.SiriusProvider.Tests", "Sources\Orion.App.Integration.SiriusProvider.Tests\Orion.App.Integration.SiriusProvider.Tests.csproj", "{BD56810C-A100-4086-BFFE-C5F6B413F9A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Integration.SiriusProvider.Tests", "Sources\Orion.App.Integration.SiriusProvider.Tests\Orion.App.Integration.SiriusProvider.Tests.csproj", "{BD56810C-A100-4086-BFFE-C5F6B413F9A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.App.Host.Client", "Sources\Orion.App.Host.Client\Orion.App.Host.Client.csproj", "{58158978-4D03-465B-B867-60F0C837CB88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orion.App.Host.Client", "Sources\Orion.App.Host.Client\Orion.App.Host.Client.csproj", "{58158978-4D03-465B-B867-60F0C837CB88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataProviders", "DataProviders", "{F2EFBC0D-0E21-4016-9A93-581D7E83DE3B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sirius", "Sirius", "{4C677A4C-89AC-4A73-BDF0-055E8C566E51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{46BC9AA6-5090-4E88-A788-4C83C1F9C893}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,5 +87,18 @@ Global
 		{58158978-4D03-465B-B867-60F0C837CB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58158978-4D03-465B-B867-60F0C837CB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58158978-4D03-465B-B867-60F0C837CB88}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0BF76165-D6CC-459F-AA88-38DE831EABFC} = {4C677A4C-89AC-4A73-BDF0-055E8C566E51}
+		{585D78E8-7212-4898-9E1B-82B225DC81BE} = {46BC9AA6-5090-4E88-A788-4C83C1F9C893}
+		{11746849-9359-4D66-B2FC-F6BCB3E9BDEB} = {46BC9AA6-5090-4E88-A788-4C83C1F9C893}
+		{BD56810C-A100-4086-BFFE-C5F6B413F9A5} = {4C677A4C-89AC-4A73-BDF0-055E8C566E51}
+		{4C677A4C-89AC-4A73-BDF0-055E8C566E51} = {F2EFBC0D-0E21-4016-9A93-581D7E83DE3B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC716A3F-ED49-4D19-94AC-FC206F443497}
 	EndGlobalSection
 EndGlobal
