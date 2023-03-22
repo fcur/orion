@@ -15,10 +15,10 @@ public static class FeatureItemDtoConverter
 
         var contentId = new ContentId(dto.Id);
         var featureTitle = new ContentTitle(dto.Name);
-        var data = dto.Contents.Select(v => v.ToDomain()).Where(v => v != null).ToArray();
+        var contents = dto.Contents.Select(v => v.ToDomain()).Where(v => v is not null).ToArray();
 
         return new FeatureState(contentId, featureTitle,
-            dto.StartTime, dto.EndTime, data!);
+            dto.StartTime, dto.EndTime, contents!);
     }
 
     public static FeatureDto Override(this FeatureDto dto, string? id = null, string? name = null,

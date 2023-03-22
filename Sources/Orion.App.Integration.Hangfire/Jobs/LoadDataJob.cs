@@ -13,7 +13,7 @@ public sealed class LoadDataJob : IHangfireJob
     private readonly IFeatureRepository _featureRepository;
     private readonly IFeatureQueryRepository _featureQueryRepository;
 
-    public LoadDataJob(IDataProviderApi dataProviderApi, 
+    public LoadDataJob(IDataProviderApi dataProviderApi,
         IFeatureRepository featureRepository,
         IFeatureQueryRepository featureQueryRepository)
     {
@@ -34,7 +34,7 @@ public sealed class LoadDataJob : IHangfireJob
         var latestDataStates = await LoadProviderData(requestParams, cancellationToken);
         var existingFeatures = await FindFeatures(latestDataStates, cancellationToken);
 
-        var existingFeatureContentIds = existingFeatures.Select(v => v.ContentId);
+        var existingFeatureContentIds = existingFeatures.Select(v => v.ContentId).ToArray();
         var newFeatureStates = latestDataStates.ExceptBy(existingFeatureContentIds, v => v.ContentId).ToArray();
         await InsertNewData(newFeatureStates, atTime, cancellationToken);
 
@@ -45,7 +45,7 @@ public sealed class LoadDataJob : IHangfireJob
     private async Task<IReadOnlyCollection<FeatureState>> LoadProviderData(GetEventsParams requestParams,
         CancellationToken cancellationToken)
     {
-        var latestData = await _dataProviderApi.GetFeeds(requestParams);
+        var latestData = await _dataProviderApi.GetFeeds(requestParams, cancellationToken);
         return latestData.Select(v => v.ToState()).ToArray();
     }
 
@@ -78,15 +78,21 @@ public sealed class LoadDataJob : IHangfireJob
         var changedFeatures = new List<Feature>(featureItems.Count);
         foreach (var item in featureItems)
         {
-            if (!stateItemsDictionary.TryGetValue(item.ContentId, out var state) 
-                || item.Update(state!, atTime).HasValue)
+            if (!stateItemsDictionary.TryGetValue(item.ContentId, out var state))
+            {
+                continue;
+            }
+
+            var maybeError = item.MaybeUpdate(state!, atTime).HasValue;
+
+            if (maybeError)
             {
                 continue;
             }
 
             changedFeatures.Add(item);
         }
-        
+
         return _featureRepository.UpdateRange(changedFeatures, cancellationToken);
     }
 }

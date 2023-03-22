@@ -40,7 +40,7 @@ public sealed class Feature : DomainEntity<FeatureId>
     public IReadOnlyCollection<FeatureContent> Contents { get; private set; }
     public uint ConcurrencyToken { get; }
 
-    public FeatureState State => new(ContentId, ContentTitle, StartAt, EndAt, Contents);
+    public FeatureState State => new(ContentId, ContentTitle, StartAt, EndAt, Contents.ToArray());
 
     public static Result<Feature, DomainError> Create(FeatureState state, DateTimeOffset atTime)
     {
@@ -51,11 +51,9 @@ public sealed class Feature : DomainEntity<FeatureId>
 
         var featureId = FeatureId.New;
         var version = DomainVersion.New;
+        var feature = state.ToDomain(atTime);
+
         var availableContent = state.GetAvailableContent();
-        var feature = new Feature(
-            featureId, state.ContentId, state.ContentTitle, state.StartAt,
-            state.EndAt, atTime, state.Contents,
-            concurrencyToken: 0, version: version);
         var creationEvent = new SiriusContentCreationEvent(featureId, state.ContentTitle, state.StartAt,
             availableContent, version, atTime);
         feature.AddEvent(creationEvent);
@@ -63,7 +61,7 @@ public sealed class Feature : DomainEntity<FeatureId>
         return feature;
     }
 
-    public Maybe<DomainError> Update(FeatureState newState, DateTimeOffset atTime)
+    public Maybe<DomainError> MaybeUpdate(FeatureState newState, DateTimeOffset atTime)
     {
         if (newState.StartAt < atTime)
         {

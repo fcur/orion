@@ -10,22 +10,86 @@ using Orion.App.Integration.SiriusProvider.Dto;
 
 namespace Orion.App.Integration.SiriusProvider.Tests;
 
-public class DataProviderTest
+public sealed class DataProviderTest
 {
     [Theory, AutoData]
     public async Task LoadNewFeatures_ThenInsert(FeatureDto featureDto)
     {
         // Arrange
-        var api = new Mock<IDataProviderApi>();
-        {
-            api.Setup(v => v.GetFeeds(It.IsAny<GetEventsParams>()))
-                .ReturnsAsync(() => { return new[] { featureDto }; });
-        }
+        var features = new ConcurrentBag<Feature>();
+        var apiMock = CreateDataProviderApi(featureDto);
+        var featureRepositoryMock = CreateFeatureInsertRepository(features);
+        var featureQueryRepositoryMock = CreateFeatureQueryRepository(Array.Empty<Feature>());
+
+        var job = new LoadDataJob(apiMock.Object, featureRepositoryMock.Object, featureQueryRepositoryMock.Object);
+
+        // Act
+        var feedsDto = await apiMock.Object.GetFeeds(requestParams: new GetEventsParams(), ct: default);
+        await job.Process(default);
+
+
+        // Assert
+        using var scope = new AssertionScope();
+        feedsDto.Single().Should().Be(featureDto);
+        features.Count.Should().Be(1);
+    }
+
+    [Theory, AutoData]
+    public async Task LoadChangedFeatures_ThenUpdate(FeatureDto changedFeatureDto, FeatureDto sameFeatureDto, FeatureState existingFeatureState)
+    {
+        // Arrange
+        var atTime = DateTimeOffset.UtcNow;
+
+        changedFeatureDto.Override(startTime: atTime.AddHours(2), endTime: atTime.AddHours(4), changedAt: atTime, name: "changed");
+        sameFeatureDto.Override(startTime: atTime.AddMinutes(102), endTime: null, changedAt: atTime, name: "same");
 
         var features = new ConcurrentBag<Feature>();
-        var featureRepository = new Mock<IFeatureRepository>();
+        var apiMock = CreateDataProviderApi(changedFeatureDto, sameFeatureDto);
+        var featureRepositoryMock = CreateFeatureUpdateRepository(features);
+
+        var stateBeforeUpdate = existingFeatureState with
         {
-            featureRepository
+            ContentId = new ContentId(changedFeatureDto.Id),
+            StartAt = atTime.AddHours(1),
+            EndAt = null
+        };
+
+        var featureQueryRepositoryMock = CreateFeatureQueryRepository(
+            stateBeforeUpdate.ToDomain(atTime),
+            sameFeatureDto.ToState().ToDomain(atTime));
+
+        var job = new LoadDataJob(apiMock.Object, featureRepositoryMock.Object, featureQueryRepositoryMock.Object);
+
+        // Act
+        var feedsDto = await apiMock.Object.GetFeeds(requestParams: new GetEventsParams(), ct: default);
+        await job.Process(default);
+
+        // Assert
+        using var scope = new AssertionScope();
+        feedsDto.Should().Contain(new[] { changedFeatureDto, sameFeatureDto });
+        features.Should().ContainSingle(v
+            => v.ContentId == stateBeforeUpdate.ContentId
+            && v.ContentTitle.Value == changedFeatureDto.Name
+            && v.StartAt == changedFeatureDto.StartTime
+            && v.EndAt == changedFeatureDto.EndTime);
+    }
+
+    private static Mock<IDataProviderApi> CreateDataProviderApi(params FeatureDto[] features)
+    {
+        var mock = new Mock<IDataProviderApi>();
+        {
+            mock.Setup(v => v.GetFeeds(It.IsAny<GetEventsParams>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((GetEventsParams requestParams, CancellationToken ct) => { return features; });
+        }
+
+        return mock;
+    }
+
+    private static Mock<IFeatureRepository> CreateFeatureInsertRepository(ConcurrentBag<Feature> features)
+    {
+        var mock = new Mock<IFeatureRepository>();
+        {
+            mock
                 .Setup(v => v.InsertRange(It.IsAny<IReadOnlyCollection<Feature>>(), It.IsAny<CancellationToken>()))
                 .Returns((IReadOnlyCollection<Feature> newFeatures, CancellationToken ct) =>
                 {
@@ -38,47 +102,13 @@ public class DataProviderTest
                 });
         }
 
-        var featureQueryRepository = new Mock<IFeatureQueryRepository>();
-        {
-            featureQueryRepository
-                .Setup(v => v.Find(It.IsAny<IReadOnlyCollection<ContentId>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((IReadOnlyCollection<ContentId> contentIds, CancellationToken ct) =>
-                    Array.Empty<Feature>());
-        }
-
-        var job = new LoadDataJob(api.Object, featureRepository.Object, featureQueryRepository.Object);
-
-        // Act
-        await job.Process(default);
-
-        // Assert
-        using var scope = new AssertionScope();
-        features.Count.Should().Be(1);
+        return mock;
     }
-
-    [Theory, AutoData]
-    public async Task LoadChangedFeatures_ThenUpdate(FeatureDto updatedFeatureDto, FeatureDto sameFeatureDto, FeatureState featureState)
+    private static Mock<IFeatureRepository> CreateFeatureUpdateRepository(ConcurrentBag<Feature> features)
     {
-        // Arrange
-        var atTime = DateTimeOffset.UtcNow;
-        var existingStartAt = atTime.AddMinutes(12);
-        var updatedStartAt = atTime.AddHours(2);
-        updatedFeatureDto.Override(startTime: updatedStartAt, endTime: null, changedAt: atTime);
-        sameFeatureDto.Override(startTime: existingStartAt, endTime: null, changedAt: atTime, name: "same");
-        
-        var api = new Mock<IDataProviderApi>();
+        var mock = new Mock<IFeatureRepository>();
         {
-            api.Setup(v => v.GetFeeds(It.IsAny<GetEventsParams>()))
-                .ReturnsAsync(() => new[]
-                {
-                    updatedFeatureDto, sameFeatureDto
-                });
-        }
-
-        var features = new ConcurrentBag<Feature>();
-        var featureRepository = new Mock<IFeatureRepository>();
-        {
-            featureRepository
+            mock
                 .Setup(v => v.UpdateRange(It.IsAny<IReadOnlyCollection<Feature>>(), It.IsAny<CancellationToken>()))
                 .Returns((IReadOnlyCollection<Feature> newFeatures, CancellationToken ct) =>
                 {
@@ -86,35 +116,24 @@ public class DataProviderTest
                     {
                         features.Add(item);
                     }
+
                     return Task.CompletedTask;
                 });
         }
 
-        var updatedContentId = new ContentId(updatedFeatureDto.Id);
-        var updatedFeatureState = featureState with { ContentId = updatedContentId, StartAt = existingStartAt, EndAt = null};
-        var updatedFeature = Feature.Create(updatedFeatureState, atTime).Value;
+        return mock;
+    }
 
-        var sameFeatureState = sameFeatureDto.ToState();
-        var sameFeature = Feature.Create(sameFeatureState, atTime).Value;
-        
-        var featureQueryRepository = new Mock<IFeatureQueryRepository>();
+
+    private static Mock<IFeatureQueryRepository> CreateFeatureQueryRepository(params Feature[] features)
+    {
+        var mock = new Mock<IFeatureQueryRepository>();
         {
-            featureQueryRepository
-                .Setup(v => v.Find(It.IsAny<IReadOnlyCollection<ContentId>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((IReadOnlyCollection<ContentId> contentIds, CancellationToken ct) => new[]
-                {
-                    updatedFeature,
-                    sameFeature
-                });
+            mock
+               .Setup(v => v.Find(It.IsAny<IReadOnlyCollection<ContentId>>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync((IReadOnlyCollection<ContentId> contentIds, CancellationToken ct) => features);
         }
 
-        var job = new LoadDataJob(api.Object, featureRepository.Object, featureQueryRepository.Object);
-
-        // Act
-        await job.Process(default);
-
-        // Assert
-        using var scope = new AssertionScope();
-        features.Single().ContentId.Should().Be(updatedContentId);
+        return mock;
     }
 }
